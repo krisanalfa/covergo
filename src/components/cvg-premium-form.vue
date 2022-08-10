@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import {computed} from 'vue';
 import {useVModel} from '@vueuse/core';
 
 import {usePremium} from '../composables/premium';
@@ -6,7 +7,6 @@ import {countries, plans} from '../data';
 import CvgInput from './forms/cvg-input.vue';
 import CvgSelect from './forms/cvg-select.vue';
 import CvgRadioGroup from './forms/cvg-radio-group.vue';
-import {computed} from 'vue';
 
 const props = defineProps<{
   modelValue: {
@@ -31,7 +31,7 @@ const {
 const formattedPlans = computed(
     () => plans.map(
         (p) => {
-          const percent = Math.abs((1 - p.multiplier) * 100);
+          const percent = p.multiplier * 100;
           if (!percent) return p;
 
           const diff = (basePremiumPrice.value * percent) / 100;
@@ -78,10 +78,10 @@ const formattedPlans = computed(
     />
 
     <div v-if="premiumPrice">
-      <h1 class="text-2xl font-extrabold mt-10 sm:text-3xl sm:tracking-tight">
+      <h1 class="text-2xl font-bold mt-10 sm:text-3xl sm:tracking-tight">
         <span class="text-gray-900">Your premium is </span>
         <span
-          class="text-blue-600"
+          class="font-extrabold text-blue-600"
           v-text="formattedPremiumPrice"
         />
       </h1>

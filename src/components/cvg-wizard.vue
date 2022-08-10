@@ -3,11 +3,15 @@ import {computed, ref, watch} from 'vue';
 
 import CvgIconCheck from './icons/outlined/cvg-icon-check.vue';
 import CvgIconCart from './icons/outlined/cvg-icon-cart.vue';
+import CvgIconRefresh from './icons/outlined/cvg-icon-refresh.vue';
+import CvgIconArrowLeft from './icons/solid/cvg-arrow-left.vue';
+import CvgIconArrowRight from './icons/solid/cvg-arrow-right.vue';
 import CvgCenterContent from './cvg-center-content.vue';
 import CvgPanel from './cvg-panel.vue';
 import CvgStepper from './cvg-stepper.vue';
 import CvgPremiumForm from './cvg-premium-form.vue';
 import {usePremium} from '../composables/premium';
+import Logo from '../assets/logo.svg';
 
 const benefits = [
   'Easy registration',
@@ -68,7 +72,7 @@ const back = () => {
 
 const {
   formattedBasePremiumPrice,
-  formattedPriceDiff,
+  formattedPlanPrice,
   plan,
   country,
   formattedPremiumPrice,
@@ -77,11 +81,16 @@ const {
 
 <template>
   <CvgCenterContent>
-    <CvgPanel>
+    <img
+      :src="Logo"
+      alt="CoverGo"
+      class="mx-auto"
+    >
+
+    <CvgPanel class="mt-6">
       <CvgStepper
         v-model="step"
         :steps="steps"
-        class="bg-white rounded-lg"
       >
         <template #step-0>
           <div class="px-6 pt-12 pb-10">
@@ -185,7 +194,7 @@ const {
                   />
                 </dt>
                 <dd class="text-sm font-medium text-gray-900">
-                  +<span v-text="formattedPriceDiff" />
+                  +<span v-text="formattedPlanPrice" />
                 </dd>
               </div>
 
@@ -205,7 +214,7 @@ const {
           <div class="border-t-2 border-gray-100 pt-10 pb-8 px-6 bg-white sm:px-10 sm:py-10">
             <button
               v-if="step === 0"
-              class="btn--primary"
+              class="btn btn--primary"
               @click="next"
             >
               Start
@@ -213,10 +222,11 @@ const {
 
             <button
               v-else-if="hasError"
-              class="btn--secondary"
+              class="btn btn--secondary"
               @click="reset"
             >
-              Start over
+              <CvgIconRefresh />
+              <span>Start over</span>
             </button>
 
             <div
@@ -224,14 +234,15 @@ const {
               class="grid grid-cols-2 gap-4"
             >
               <button
-                class="btn--secondary"
+                class="btn btn--secondary"
                 @click="back"
               >
-                Back
+                <CvgIconArrowLeft />
+                <span>Back</span>
               </button>
               <button
                 v-if="step === 2"
-                class="btn--primary space-x-2"
+                class="btn btn--primary"
                 @click="reset"
               >
                 <CvgIconCart />
@@ -239,10 +250,11 @@ const {
               </button>
               <button
                 v-else
-                class="btn--primary"
+                class="btn btn--primary"
                 @click="next"
               >
-                Next
+                <span>Next</span>
+                <CvgIconArrowRight />
               </button>
             </div>
           </div>
@@ -253,11 +265,14 @@ const {
 </template>
 
 <style scoped>
+.btn {
+  @apply w-full space-x-2 flex justify-center items-center rounded-lg border border-transparent px-6 py-4 text-xl leading-6 font-medium;
+}
 .btn--primary {
-  @apply w-full flex justify-center rounded-lg border border-transparent bg-blue-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-blue-700 active:bg-blue-800;
+  @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800;
 }
 
 .btn--secondary {
-  @apply w-full flex justify-center rounded-lg border border-transparent bg-gray-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-gray-700 active:bg-gray-800;
+  @apply bg-gray-600 text-white hover:bg-gray-700 active:bg-gray-800;
 }
 </style>
