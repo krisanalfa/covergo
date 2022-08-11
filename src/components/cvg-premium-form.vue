@@ -77,7 +77,10 @@ const formattedPlans = computed(
       :options="formattedPlans"
     />
 
-    <div v-if="premiumPrice">
+    <div
+      v-if="premiumPrice"
+      id="premium-overview"
+    >
       <h1 class="text-2xl font-bold mt-10 sm:text-3xl sm:tracking-tight">
         <span class="text-gray-900">Your premium is </span>
         <span

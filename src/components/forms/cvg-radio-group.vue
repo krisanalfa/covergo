@@ -38,14 +38,14 @@ const value = useVModel(props, 'modelValue', emit);
           class="flex items-center"
         >
           <input
-            :id="`${option.value}`"
+            :id="`${id}-${option.value}`"
             v-model="value"
             :value="option.value"
             type="radio"
             class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
           >
           <label
-            :for="`${option.value}`"
+            :for="`${id}-${option.value}`"
             class="ml-3 block text-sm text-gray-600"
             v-text="option.label"
           />

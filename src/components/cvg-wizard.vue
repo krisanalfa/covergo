@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {computed, ref, watch} from 'vue';
+import {User} from '@krisanalfa/covergo';
 
 import CvgIconCheck from './icons/outlined/cvg-icon-check.vue';
 import CvgIconCart from './icons/outlined/cvg-icon-cart.vue';
@@ -11,7 +12,6 @@ import CvgPanel from './cvg-panel.vue';
 import CvgStepper from './cvg-stepper.vue';
 import CvgPremiumForm from './cvg-premium-form.vue';
 import {usePremium} from '../composables/premium';
-import Logo from '../assets/logo.svg';
 
 const benefits = [
   'Easy registration',
@@ -22,7 +22,7 @@ const benefits = [
 
 const error = ref<string>();
 const step = ref(0);
-const user = ref({
+const user = ref<User>({
   name: '',
   age: 0,
   country: 0,
@@ -65,33 +65,40 @@ const next = () => {
   step.value++;
 };
 const back = () => {
-  if (step.value === 0) return;
-
   step.value--;
 };
 
 const {
+  /* c8 ignore next */
   formattedBasePremiumPrice,
   formattedPlanPrice,
   plan,
   country,
   formattedPremiumPrice,
 } = usePremium(user);
+
+defineExpose({
+  step,
+  steps,
+  user,
+});
 </script>
 
 <template>
   <CvgCenterContent>
     <img
-      :src="Logo"
+      src="/logo.svg"
       alt="CoverGo"
       class="mx-auto"
     >
 
     <CvgPanel class="mt-6">
+      <!-- /* c8 ignore start */ -->
       <CvgStepper
         v-model="step"
         :steps="steps"
       >
+        <!-- /* c8 ignore end */ -->
         <template #step-0>
           <div class="px-6 pt-12 pb-10">
             <h3 class="text-center text-3xl font-semibold text-gray-900 sm:-mx-6">
@@ -132,9 +139,7 @@ const {
             </h3>
           </div>
           <div class="border-t-2 border-gray-100 pt-10 pb-8 px-6 bg-gray-100 sm:px-10 sm:py-10">
-            <CvgPremiumForm
-              v-model="user"
-            />
+            <CvgPremiumForm v-model="user" />
           </div>
         </template>
 
@@ -164,25 +169,44 @@ const {
                   Name
                 </dt>
                 <dd class="text-sm font-medium text-gray-900">
-                  <span v-text="user.name" />
+                  <span
+                    id="summary-name"
+                    v-text="user.name"
+                  />
                 </dd>
               </div>
-
               <div class="flex items-center justify-between">
                 <dt class="text-sm">
                   Country
                 </dt>
                 <dd class="text-sm font-medium text-gray-900">
-                  <span v-text="country.label" />
+                  <span
+                    id="summary-country"
+                    v-text="country.label"
+                  />
+                </dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt class="text-sm">
+                  Age
+                </dt>
+                <dd class="text-sm font-medium text-gray-900">
+                  <span
+                    id="summary-age"
+                    v-text="user.age"
+                  />
                 </dd>
               </div>
 
               <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                 <dt class="text-sm">
-                  Base plan
+                  Base premium
                 </dt>
                 <dd class="text-sm font-medium text-gray-900">
-                  <span v-text="formattedBasePremiumPrice" />
+                  <span
+                    id="summary-base-premium"
+                    v-text="formattedBasePremiumPrice"
+                  />
                 </dd>
               </div>
               <div class="flex items-center justify-between">
@@ -194,7 +218,10 @@ const {
                   />
                 </dt>
                 <dd class="text-sm font-medium text-gray-900">
-                  +<span v-text="formattedPlanPrice" />
+                  +<span
+                    id="summary-plan-price"
+                    v-text="formattedPlanPrice"
+                  />
                 </dd>
               </div>
 
@@ -203,7 +230,10 @@ const {
                   Total
                 </dt>
                 <dd class="text-base font-medium text-gray-900">
-                  <span v-text="formattedPremiumPrice" />
+                  <span
+                    id="summary-premium"
+                    v-text="formattedPremiumPrice"
+                  />
                 </dd>
               </div>
             </dl>
@@ -214,6 +244,7 @@ const {
           <div class="border-t-2 border-gray-100 pt-10 pb-8 px-6 bg-white sm:px-10 sm:py-10">
             <button
               v-if="step === 0"
+              id="start-button"
               class="btn btn--primary"
               @click="next"
             >
@@ -222,6 +253,7 @@ const {
 
             <button
               v-else-if="hasError"
+              id="restart-button"
               class="btn btn--secondary"
               @click="reset"
             >
@@ -234,6 +266,7 @@ const {
               class="grid grid-cols-2 gap-4"
             >
               <button
+                id="back-button"
                 class="btn btn--secondary"
                 @click="back"
               >
@@ -242,6 +275,7 @@ const {
               </button>
               <button
                 v-if="step === 2"
+                id="buy-button"
                 class="btn btn--primary"
                 @click="reset"
               >
@@ -250,6 +284,7 @@ const {
               </button>
               <button
                 v-else
+                id="next-button"
                 class="btn btn--primary"
                 @click="next"
               >
