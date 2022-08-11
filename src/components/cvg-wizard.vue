@@ -17,7 +17,8 @@ const benefits = [
   'Easy registration',
   'No credit card information required',
   'Absolutely anonymous',
-  'Quick and easy to use',
+  'Super quick process',
+  'No tracking and no spam',
 ];
 
 const error = ref<string>();
@@ -52,6 +53,9 @@ watch(
     },
 );
 
+const scrollTop = () => {
+  window.scroll({top: 0, behavior: 'smooth'});
+};
 const reset = () => {
   user.value = {
     name: '',
@@ -61,12 +65,15 @@ const reset = () => {
   };
   error.value = undefined;
   step.value = 0;
+  scrollTop();
 };
 const next = () => {
   step.value++;
+  scrollTop();
 };
 const back = () => {
   step.value--;
+  scrollTop();
 };
 
 defineExpose({
@@ -145,7 +152,7 @@ defineExpose({
         <template #step-2>
           <div class="px-6 pt-12 pb-10">
             <h3 class="text-center text-3xl font-semibold text-gray-900 sm:-mx-6">
-              <span v-if="hasError">Ooops</span>
+              <span v-if="hasError">Ooops!</span>
               <span v-else>Confirm your order summary</span>
             </h3>
             <div
@@ -235,13 +242,11 @@ defineExpose({
 
 <style scoped>
 .btn {
-  @apply w-full space-x-3 flex justify-center items-center rounded-lg border border-transparent px-6 py-4 text-xl leading-6 font-medium disabled:pointer-events-none;
+  @apply w-full space-x-3 flex justify-center items-center rounded-lg border border-transparent px-6 py-4 text-xl leading-6 font-medium disabled:pointer-events-none focus:outline-none focus:ring focus:ring-blue-300;
 }
 .btn--primary {
   @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-200 disabled:text-gray-500;
-
 }
-
 .btn--secondary {
   @apply bg-blue-50 text-blue-800 hover:bg-blue-100 active:bg-blue-200;
 }

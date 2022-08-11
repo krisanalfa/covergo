@@ -7,6 +7,9 @@ describe('CvgWizard', () => {
 
   beforeEach(() => {
     wrapper = mount(CvgWizard);
+    global.window = window;
+    // @ts-expect-error: invalid polyfill signature
+    window.scroll = vi.fn();
   });
 
   it('should be defined', () => {
