@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import {Selectable} from '@krisanalfa/covergo';
 import {useVModel} from '@vueuse/core';
 
 const props = defineProps({
@@ -15,7 +16,7 @@ const props = defineProps({
     required: true,
   },
   options: {
-    type: Array as () => {label: string, value: string | number}[],
+    type: Array as () => Selectable[],
     default: () => [],
   },
 });

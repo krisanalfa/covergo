@@ -11,7 +11,7 @@ import CvgCenterContent from './cvg-center-content.vue';
 import CvgPanel from './cvg-panel.vue';
 import CvgStepper from './cvg-stepper.vue';
 import CvgPremiumForm from './cvg-premium-form.vue';
-import {usePremium} from '../composables/premium';
+import CvgPremiumSummary from './cvg-premium-summary.vue';
 
 const benefits = [
   'Easy registration',
@@ -29,6 +29,7 @@ const user = ref<User>({
   plan: 0,
 });
 
+const isInvalid = computed(() => !user.value.name || !user.value.age);
 const hasError = computed(() => step.value === 2 && error.value);
 const steps = computed(
     () => hasError.value ?
@@ -68,15 +69,6 @@ const back = () => {
   step.value--;
 };
 
-const {
-  plan,
-  country,
-  formattedPremiumPrice,
-  /* c8 ignore next */
-  formattedBasePremiumPrice,
-  formattedPlanPrice,
-} = usePremium(user);
-
 defineExpose({
   step,
   steps,
@@ -86,7 +78,7 @@ defineExpose({
 </script>
 
 <template>
-  <CvgCenterContent class="bg-blue-900">
+  <CvgCenterContent class="bg-blue-900 py-10 lg:py-0">
     <img
       src="/logo.svg"
       alt="CoverGo"
@@ -100,6 +92,7 @@ defineExpose({
         :steps="steps"
       >
         <!-- /* c8 ignore end */ -->
+        <!-- Welcome -->
         <template #step-0>
           <div class="px-6 pt-12 pb-10">
             <h3 class="text-center text-3xl font-semibold text-gray-900 sm:-mx-6">
@@ -133,6 +126,7 @@ defineExpose({
           </div>
         </template>
 
+        <!-- Premium form -->
         <template #step-1>
           <div class="px-6 pt-12 pb-10">
             <h3 class="text-center text-3xl font-semibold text-gray-900 sm:-mx-6">
@@ -147,11 +141,12 @@ defineExpose({
           </div>
         </template>
 
+        <!-- Summary / error page -->
         <template #step-2>
           <div class="px-6 pt-12 pb-10">
             <h3 class="text-center text-3xl font-semibold text-gray-900 sm:-mx-6">
               <span v-if="hasError">Ooops</span>
-              <span v-else>Summary</span>
+              <span v-else>Confirm your order summary</span>
             </h3>
             <div
               v-if="hasError"
@@ -167,80 +162,7 @@ defineExpose({
             v-if="!hasError"
             class="border-t-2 border-gray-100 pt-10 pb-8 px-6 bg-gray-100 sm:px-10 sm:py-10"
           >
-            <dl class="space-y-6">
-              <div class="flex items-center justify-between">
-                <dt class="text-sm">
-                  Name
-                </dt>
-                <dd class="text-sm font-medium text-gray-900">
-                  <span
-                    id="summary-name"
-                    v-text="user.name"
-                  />
-                </dd>
-              </div>
-              <div class="flex items-center justify-between">
-                <dt class="text-sm">
-                  Country
-                </dt>
-                <dd class="text-sm font-medium text-gray-900">
-                  <span
-                    id="summary-country"
-                    v-text="country.label"
-                  />
-                </dd>
-              </div>
-              <div class="flex items-center justify-between">
-                <dt class="text-sm">
-                  Age
-                </dt>
-                <dd class="text-sm font-medium text-gray-900">
-                  <span
-                    id="summary-age"
-                    v-text="user.age"
-                  />
-                </dd>
-              </div>
-
-              <div class="flex items-center justify-between border-t border-gray-200 pt-6">
-                <dt class="text-sm">
-                  Base premium
-                </dt>
-                <dd class="text-sm font-medium text-gray-900">
-                  <span
-                    id="summary-base-premium"
-                    v-text="formattedBasePremiumPrice"
-                  />
-                </dd>
-              </div>
-              <div class="flex items-center justify-between">
-                <dt class="text-sm">
-                  Selected plan
-                  <span
-                    class="ml-2 rounded-full bg-blue-200 text-xs text-gray-700 py-0.5 px-2 tracking-wide"
-                    v-text="plan.label"
-                  />
-                </dt>
-                <dd class="text-sm font-medium text-gray-900">
-                  +<span
-                    id="summary-plan-price"
-                    v-text="formattedPlanPrice"
-                  />
-                </dd>
-              </div>
-
-              <div class="flex items-center justify-between border-t border-gray-200 pt-6">
-                <dt class="text-base font-medium">
-                  Total
-                </dt>
-                <dd class="text-base font-medium text-gray-900">
-                  <span
-                    id="summary-premium"
-                    v-text="formattedPremiumPrice"
-                  />
-                </dd>
-              </div>
-            </dl>
+            <CvgPremiumSummary v-model="user" />
           </div>
         </template>
 
@@ -255,6 +177,7 @@ defineExpose({
               Start
             </button>
 
+            <!-- Last step, has error -->
             <button
               v-else-if="hasError"
               id="restart-button"
@@ -265,10 +188,12 @@ defineExpose({
               <span>Start over</span>
             </button>
 
+            <!-- 2nd / 3rd step -->
             <div
               v-else
               class="grid grid-cols-2 gap-4"
             >
+              <!-- Back button, 2nd / 3rd step only -->
               <button
                 id="back-button"
                 class="btn btn--secondary"
@@ -277,19 +202,24 @@ defineExpose({
                 <CvgIconArrowLeft />
                 <span>Back</span>
               </button>
+
+              <!-- Buy button, 3rd step only -->
               <button
                 v-if="step === 2"
                 id="buy-button"
                 class="btn btn--primary"
                 @click="reset"
               >
-                <CvgIconCart />
                 <span>Buy</span>
+                <CvgIconCart />
               </button>
+
+              <!-- 2nd step only -->
               <button
                 v-else
                 id="next-button"
                 class="btn btn--primary"
+                :disabled="isInvalid"
                 @click="next"
               >
                 <span>Next</span>
@@ -305,13 +235,14 @@ defineExpose({
 
 <style scoped>
 .btn {
-  @apply w-full space-x-2 flex justify-center items-center rounded-lg border border-transparent px-6 py-4 text-xl leading-6 font-medium;
+  @apply w-full space-x-3 flex justify-center items-center rounded-lg border border-transparent px-6 py-4 text-xl leading-6 font-medium disabled:pointer-events-none;
 }
 .btn--primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800;
+  @apply bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 disabled:bg-gray-200 disabled:text-gray-500;
+
 }
 
 .btn--secondary {
-  @apply bg-gray-600 text-white hover:bg-gray-700 active:bg-gray-800;
+  @apply bg-blue-50 text-blue-800 hover:bg-blue-100 active:bg-blue-200;
 }
 </style>

@@ -7,15 +7,9 @@ import {countries, plans} from '../data';
 import CvgInput from './forms/cvg-input.vue';
 import CvgSelect from './forms/cvg-select.vue';
 import CvgRadioGroup from './forms/cvg-radio-group.vue';
+import {User} from '@krisanalfa/covergo';
 
-const props = defineProps<{
-  modelValue: {
-    name: string
-    age: number
-    country: number
-    plan: number
-  }
-}>();
+const props = defineProps<{modelValue: User}>();
 const emit = defineEmits([
   'update:modelValue',
   'submit',

@@ -68,13 +68,13 @@ Here's the latest result:
 ```
  ✓ src/components/forms/cvg-input.spec.ts (2)
  ✓ src/composables/premium.spec.ts (9)
- ✓ src/components/cvg-wizard.spec.ts (6)
+ ✓ src/components/cvg-wizard.spec.ts (7)
  ✓ src/app.spec.ts (1)
 
 Test Files  4 passed (4)
-     Tests  18 passed (18)
-  Start at  16:54:27
-  Duration  2.32s (setup 1ms, collect 1.56s, tests 217ms)
+     Tests  19 passed (19)
+  Start at  21:02:43
+  Duration  2.45s (setup 1ms, collect 1.64s, tests 250ms)
 
 -------------------------------|---------|----------|---------|---------|-------------------
 File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
@@ -83,10 +83,12 @@ All files                      |     100 |      100 |     100 |     100 |
  src                           |     100 |      100 |     100 |     100 |
   App.vue                      |     100 |      100 |     100 |     100 |
   app.ts                       |     100 |      100 |     100 |     100 |
+  constants.ts                 |     100 |      100 |     100 |     100 |
  src/components                |     100 |      100 |     100 |     100 |
   cvg-center-content.vue       |     100 |      100 |     100 |     100 |
   cvg-panel.vue                |     100 |      100 |     100 |     100 |
   cvg-premium-form.vue         |     100 |      100 |     100 |     100 |
+  cvg-premium-summary.vue      |     100 |      100 |     100 |     100 |
   cvg-stepper.vue              |     100 |      100 |     100 |     100 |
   cvg-wizard.vue               |     100 |      100 |     100 |     100 |
  src/components/forms          |     100 |      100 |     100 |     100 |
@@ -112,8 +114,3 @@ All files                      |     100 |      100 |     100 |     100 |
 ```
 
 > Since the main focus of this project is the `Wizard` component and premium calculator composable function, I wrote a very extensive unit test for them.
-
-### TODO
-
-- [ ] Make sure it works on mobile
-- [ ] Form validation and `submit` event handling

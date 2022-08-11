@@ -32,4 +32,9 @@ declare module '@krisanalfa/covergo' {
     currency: string;
     locale: string;
   }
+
+  export interface Selectable {
+    label: string;
+    value: string | number;
+  }
 }

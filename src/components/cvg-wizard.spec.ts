@@ -103,6 +103,32 @@ describe('CvgWizard', () => {
     expect(premiumOverview.text()).toContain('$1,050.00');
   });
 
+  it('can validate the form', async () => {
+    const wizard = wrapper.getComponent(CvgWizard);
+    await wrapper.get('#start-button').trigger('click');
+
+    // Make sure we're in the second step
+    expect(wizard.vm.step).toBe(1);
+    const nextButton = wizard.find<HTMLButtonElement>('button#next-button');
+    const inputName = wrapper.get<HTMLInputElement>('input#name');
+    const inputAge = wrapper.get<HTMLInputElement>('input#age');
+
+    expect(nextButton.element.disabled).toBe(true);
+    await inputName.setValue('John Doe');
+    // Still disabled, need to fill in age
+    expect(nextButton.element.disabled).toBe(true);
+    await inputAge.setValue('20');
+    expect(nextButton.element.disabled).toBe(false);
+
+    await inputAge.setValue('0');
+    expect(nextButton.element.disabled).toBe(true);
+
+    // Clicking disabled button should not do anything
+    await nextButton.trigger('click');
+    // Still in the second step
+    expect(wizard.vm.step).toBe(1);
+  });
+
   it('can go next to "Summary" screen using correct information', async () => {
     const wizard = wrapper.getComponent(CvgWizard);
     expect(wizard.vm.step).toBe(0);
@@ -113,11 +139,12 @@ describe('CvgWizard', () => {
     await wrapper.get('#next-button').trigger('click');
     expect(wizard.vm.step).toBe(2);
 
-    expect(wrapper.text()).toContain('Summary');
+    expect(wrapper.text()).toContain('Confirm your order summary');
     expect(wrapper.get('#summary-name').text()).toContain('John Doe');
     expect(wrapper.get('#summary-country').text()).toContain('Hong Kong');
     expect(wrapper.get('#summary-age').text()).toContain('20');
     expect(wrapper.get('#summary-base-premium').text()).toContain('HK$200.00');
+    expect(wrapper.get('#summary-selected-plan').text()).toContain('Standard');
     expect(wrapper.get('#summary-plan-price').text()).toContain('HK$0.00');
     expect(wrapper.get('#summary-premium').text()).toContain('HK$200.00');
 

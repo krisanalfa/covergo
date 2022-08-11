@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full grid content-center">
+  <div class="min-h-full grid justify-center content-center">
     <slot />
   </div>
 </template>
