@@ -61,6 +61,7 @@ const formattedPlans = computed(
       v-model.number="user.age"
       label="Age"
       placeholder="Your age"
+      type="number"
     />
 
     <CvgSelect
