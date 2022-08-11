@@ -15,4 +15,21 @@ declare module '@krisanalfa/covergo' {
     country: number;
     plan: number;
   }
+
+  export interface Plan {
+    label: string;
+    value: number;
+    rate: number;
+  }
+
+  export interface Currency {
+    rate: number;
+  }
+
+  export interface Country {
+    label: string;
+    value: number;
+    currency: string;
+    locale: string;
+  }
 }

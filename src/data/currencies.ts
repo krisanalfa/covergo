@@ -1,20 +1,15 @@
-export enum Currencies {
-  HKD = 'HKD',
-  USD = 'USD',
-  AUD = 'AUD',
-}
+import {Currency} from '@krisanalfa/covergo';
 
-export const currencies = {
+import {Currencies} from '../constants';
+
+export const currencies: Record<string, Currency> = {
   [Currencies.HKD]: {
     rate: 1,
-    symbol: 'HK$',
   },
   [Currencies.USD]: {
     rate: 2,
-    symbol: '$',
   },
   [Currencies.AUD]: {
     rate: 3,
-    symbol: 'A$',
   },
 };

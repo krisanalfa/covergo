@@ -153,13 +153,14 @@ describe('CvgWizard', () => {
     expect(wizard.vm.user.plan).toBe(0);
   });
 
-  it('can go next to "Summary" screen using correct information', async () => {
+  it('can show error screen when the age exceeded the limit', async () => {
     const wizard = wrapper.getComponent(CvgWizard);
     expect(wizard.vm.step).toBe(0);
     await wrapper.get('#start-button').trigger('click');
     expect(wizard.vm.step).toBe(1);
     await wrapper.get<HTMLInputElement>('input#name').setValue('John Doe');
     await wrapper.get<HTMLInputElement>('input#age').setValue('101');
+    expect(wizard.vm.error).toContain('Your age is over our acceptable limit. We are sorry but we cannot insure you now.');
     await wrapper.get('#next-button').trigger('click');
     expect(wizard.vm.step).toBe(2);
 

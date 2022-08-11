@@ -39,6 +39,7 @@ const value = useVModel(props, 'modelValue', emit);
       <input
         :id="id"
         v-model="value"
+        :name="id"
         :type="type"
         :placeholder="placeholder"
         class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full grid content-center bg-gray-900">
+  <div class="h-full w-full grid content-center">
     <slot />
   </div>
 </template>

@@ -14,6 +14,7 @@ describe('CvgInput', () => {
             label: 'Name',
             id: 'name',
             modelValue: 'Jane',
+            placeholder: 'Enter your name',
           },
         },
     );
@@ -24,11 +25,21 @@ describe('CvgInput', () => {
   });
 
   it('should render correctly', async () => {
+    const label = wrapper.find('label');
+    expect(label.text()).toBe('Name');
+    expect(label.attributes('for')).toBe('name');
+
     const input = wrapper.find<HTMLInputElement>('input');
+
     expect(input.element.value).toBe('Jane');
+    expect(input.element.id).toBe('name');
+    expect(input.element.name).toBe('name');
+    expect(input.attributes('type')).toBe('text');
+    expect(input.attributes('placeholder')).toBe('Enter your name');
 
     await input.setValue('John');
     expect(input.element.value).toBe('John');
+
     expect(wrapper.emitted()).toHaveProperty('update:modelValue');
 
     const evt = wrapper.emitted('update:modelValue')!;

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {computed, Ref} from 'vue';
 import type {User} from '@krisanalfa/covergo';
-import {countries, currencies, plans} from '../data';
 
-const BASE_PRICE = 10;
+import {countries, currencies, plans} from '../data';
+import {BASE_PRICE} from '../constants';
 
 export const usePremium = (user: Ref<User>) => {
   const country = computed(() => countries.find((c) => c.value === user.value.country)!);
@@ -11,14 +11,18 @@ export const usePremium = (user: Ref<User>) => {
   const currency = computed(() => currencies[country.value.currency]);
   const formatter = computed(() => new Intl.NumberFormat(
       country.value.locale,
-      {style: 'currency', currency: country.value.currency},
+      {
+        style: 'currency',
+        currency: country.value.currency,
+        currencyDisplay: 'symbol',
+      },
   ));
 
   const basePremium = computed(() => user.value.age * BASE_PRICE);
   const basePremiumPrice = computed(() => basePremium.value * currency.value.rate);
   const formattedBasePremiumPrice = computed(() => formatter.value.format(basePremiumPrice.value));
 
-  const planAmount = computed(() => basePremium.value * plan.value.multiplier);
+  const planAmount = computed(() => basePremium.value * plan.value.rate);
   const planPrice = computed(() => planAmount.value * currency.value.rate);
   const formattedPlanPrice = computed(() => formatter.value.format(planPrice.value));
 

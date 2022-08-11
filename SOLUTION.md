@@ -49,7 +49,8 @@ The `Wizard` component is a simple component that uses `Stepper` component, whic
 To determine the screen we need to render, the `Stepper` will render the corresponding dynamic `slot`.
 This dynamic `slot` is driven by `Stepper`'s `step` state.
 
-All data is hardcoded and work synchronously. Of course I can make it asynchronous, but it would increase the complexity of the code.
+All data is hardcoded and work synchronously.
+Of course I can make it asynchronous, but it would increase the complexity of the code quite massively.
 My main focus when making this project is to make it as simple as possible.
 
 I'm using Vue composition API to make common functions reusable.
@@ -60,7 +61,9 @@ This is a good practice to make your code more testable and easier to maintain.
 Some of the components came with their own unit tests, especially the component that has a lot of logic.
 
 I love automated testing, that's why I spent a lot of time working on the test than the actual implementation.
-Currently the test coverage is at **100%**. You can check the coverage report by running `pnpm run test --coverage` command and serve `coverage` directory. Here's the latest result:
+Currently the test coverage is at **100%**.
+You can check the coverage report by running `pnpm run test --coverage` command and serve `coverage` directory.
+Here's the latest result:
 
 ```
  ✓ src/components/forms/cvg-input.spec.ts (2)

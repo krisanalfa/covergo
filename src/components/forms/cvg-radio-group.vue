@@ -40,6 +40,7 @@ const value = useVModel(props, 'modelValue', emit);
           <input
             :id="`${id}-${option.value}`"
             v-model="value"
+            :name="id"
             :value="option.value"
             type="radio"
             class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"

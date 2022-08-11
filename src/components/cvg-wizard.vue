@@ -69,23 +69,24 @@ const back = () => {
 };
 
 const {
-  /* c8 ignore next */
-  formattedBasePremiumPrice,
-  formattedPlanPrice,
   plan,
   country,
   formattedPremiumPrice,
+  /* c8 ignore next */
+  formattedBasePremiumPrice,
+  formattedPlanPrice,
 } = usePremium(user);
 
 defineExpose({
   step,
   steps,
   user,
+  error,
 });
 </script>
 
 <template>
-  <CvgCenterContent>
+  <CvgCenterContent class="bg-blue-900">
     <img
       src="/logo.svg"
       alt="CoverGo"
@@ -139,7 +140,10 @@ defineExpose({
             </h3>
           </div>
           <div class="border-t-2 border-gray-100 pt-10 pb-8 px-6 bg-gray-100 sm:px-10 sm:py-10">
-            <CvgPremiumForm v-model="user" />
+            <CvgPremiumForm
+              v-model="user"
+              @submit="next"
+            />
           </div>
         </template>
 

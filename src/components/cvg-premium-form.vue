@@ -31,7 +31,7 @@ const {
 const formattedPlans = computed(
     () => plans.map(
         (p) => {
-          const percent = p.multiplier * 100;
+          const percent = p.rate * 100;
           if (!percent) return p;
 
           const diff = (basePremiumPrice.value * percent) / 100;
@@ -48,7 +48,10 @@ const formattedPlans = computed(
 </script>
 
 <template>
-  <form class="space-y-6">
+  <form
+    class="space-y-6"
+    @submit.prevent="emit('submit', user)"
+  >
     <CvgInput
       id="name"
       v-model="user.name"
