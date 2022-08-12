@@ -24,7 +24,7 @@ describe('CvgInput', () => {
     expect(wrapper).toBeDefined();
   });
 
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const label = wrapper.find('label');
     expect(label.text()).toBe('Name');
     expect(label.attributes('for')).toBe('name');
@@ -36,6 +36,10 @@ describe('CvgInput', () => {
     expect(input.element.name).toBe('name');
     expect(input.attributes('type')).toBe('text');
     expect(input.attributes('placeholder')).toBe('Enter your name');
+  });
+
+  it('should be able to handle two way data binding', async () => {
+    const input = wrapper.find<HTMLInputElement>('input');
 
     await input.setValue('John');
     expect(input.element.value).toBe('John');
